@@ -1,0 +1,88 @@
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/6.2.5/math.min.js"></script>
+
+</head>
+
+<body>
+
+</body>
+<script>
+    const parameters = new Map();
+
+    parameters.set('D', 10).set('W', 20).set('H', 23).set('T', 54);
+
+    const f1 = 'H+W';
+
+    const f2 = 'T+W';
+
+    const f3 = 'D*W';
+
+    const f4 = 'D*W*T';
+    class CustomError extends Error {
+        super(message, formula) {
+            this.message = '${message}, The formula is ${formula}'
+        }
+    }
+    class First {
+
+        static num(args) {
+            const formula = 'H+W'
+            let [arg1, arg2] = args
+            console.log(math.evaluate(formula, { H: parameters.get(arg1), W: parameters.get(arg2) }))
+        }
+        static number = 'H+W'
+    }
+    class Second {
+
+        static num(args) {
+            const formula = 'T+W'
+            let [arg1, arg2] = args
+            console.log(math.evaluate(formula, { T: parameters.get(arg1), W: parameters.get(arg2) }))
+        }
+        static number = 'T+W'
+
+    }
+    class Third {
+
+        static num(args) {
+            const formula = 'D*W'
+            let [arg1, arg2] = args
+            console.log(math.evaluate(formula, { D: parameters.get(arg1), W: parameters.get(arg2) }))
+        }
+        static number = 'D*W'
+
+    }
+    class Fourth {
+
+        static num(args) {
+            const formula = 'H+W'
+            let [arg1, arg2, arg3] = args
+            console.log(math.evaluate(formula, { D: parameters.get(arg1), W: parameters.get(arg2), T: parameters.get(arg3) }))
+        }
+        static number = 'D*W*T'
+    }
+    function evaluate(params) {
+        try {
+            let arr = [First, Second, Third, Fourth];
+            for (curr of arr) {
+                if (curr.number == params) {
+                    curr.num(params)
+                }
+                else {
+                    throw new CustomError('Parameters arent right', curr.number)
+                }
+            }
+        }
+        catch (e) {
+            console.log(e)
+        }
+    }
+    evaluate('H+W')
+    evaluate('T+W')
+    evaluate('D*W')
+    evaluate('D*W*T')
+</script>
+
+</html>
